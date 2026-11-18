@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プロンプトビルダー</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>プロンプトビルダー</h1>
+<p class="lead">プリセットとタグを選んで、画像生成用のプロンプトを作ります。</p>
+<div class="note">画像生成時に各要素の直前に色情報の追加等の最終確認を推奨します。</div>
+<div id="error" class="note" hidden></div>
+
+<section><h2>プリセット（複数選択可）</h2><div class="chips" id="presets"></div></section>
+<div id="cats"></div>
+
+<section>
+<details><summary>タグの管理</summary>
+<p class="lead">自由入力で追加したタグはこのブラウザに保存されます。tags.json に反映するには、書き出したファイルで置き換えてください。</p>
+<div class="row">
+<button class="btn" id="expTags" type="button">tags.json を書き出す</button>
+<button class="btn" id="resetExtra" type="button">追加したタグを消す</button>
+</div>
+</details>
+</section>
+
+<section><h2>保存したプロンプト</h2><div id="logs"></div></section>
+</main>
+
+<div class="out"><div class="out-in">
+<div id="prompt" aria-live="polite"></div>
+<div class="row">
+<button class="btn main" id="copy" type="button">コピー</button>
+<button class="btn" id="save" type="button">履歴に保存</button>
+<button class="btn" id="dl" type="button">txtで保存</button>
+<button class="btn" id="clear" type="button">選択をクリア</button>
+<span class="msg" id="msg"></span>
+</div></div></div>
+
+<script src="app.js"></script>
+</body>
+</html>
