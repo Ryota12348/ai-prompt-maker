@@ -11,7 +11,10 @@
 <h1>プロンプトビルダー</h1>
 <p class="lead">プリセットとタグを選んで、画像生成用のプロンプトを作ります。</p>
 <div class="note">画像生成時に各要素の直前に色情報の追加等の最終確認を推奨します。</div>
-<div id="error" class="note" hidden></div>
+<div id="error" class="note" hidden>
+<p id="errText"></p>
+<label class="btn pickbtn">tags.json と presets.json を選ぶ<input type="file" id="pick" accept=".json,application/json" multiple hidden></label>
+</div>
 
 <section><h2>プリセット（複数選択可）</h2><div class="chips" id="presets"></div></section>
 <div id="cats"></div>
