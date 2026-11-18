@@ -25,3 +25,5 @@ button.main{background:var(--acc);color:var(--acc-ink);border-color:var(--acc);f
 details summary{cursor:pointer;font-weight:600}
 .log{border-top:1px solid var(--line);padding:8px 0;font-size:.88rem;word-break:break-word}
 .log small{color:var(--sub);display:block}
+#errText{margin:0 0 8px;white-space:pre-line}
+.pickbtn{display:inline-block;color:var(--ink);border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:.92rem}
