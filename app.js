@@ -11,28 +11,58 @@ const $ = id => document.getElementById(id);
 function el(t, props, ...kids) { const e = document.createElement(t); Object.assign(e, props || {}); kids.forEach(k => e.append(k)); return e; }
 function flash(t) { $("msg").textContent = t; clearTimeout(flash.t); flash.t = setTimeout(() => $("msg").textContent = "", 2500); }
 
-async function fetchJson(path) {
-  const res = await fetch(path, { cache: "no-store" });
-  if (!res.ok) throw new Error(path + " (" + res.status + ")");
-  return res.json();
+function parseJson(text, name) {
+  let d;
+  try { d = JSON.parse(text.replace(/^\uFEFF/, "")); }
+  catch (e) { throw new Error(name + " のJSON形式が正しくありません（" + e.message + "）"); }
+  if (!d || typeof d !== "object" || Array.isArray(d)) throw new Error(name + " は { ... } の形式にしてください");
+  return d;
 }
+function checkTags(d) {
+  Object.entries(d).forEach(([c, v]) => {
+    if (!Array.isArray(v)) throw new Error("tags.json の「" + c + "」が配列（[ ... ]）ではありません");
+  });
+  return d;
+}
+async function fetchText(path) {
+  const res = await fetch(path, { cache: "no-store" });
+  if (!res.ok) throw new Error(path + " を取得できません（HTTP " + res.status + "）");
+  return res.text();
+}
+function showError(msg) { $("errText").textContent = msg; $("error").hidden = false; }
 
-async function init() {
-  try {
-    [tags, presets] = await Promise.all([fetchJson("tags.json"), fetchJson("presets.json")]);
-  } catch (e) {
-    const box = $("error");
-    box.hidden = false;
-    box.textContent = "tags.json / presets.json を読み込めませんでした。index.html と同じフォルダに置き、file:// ではなくWebサーバー経由で開いてください（例: python -m http.server）。";
-    return;
-  }
+function start(t, p) {
+  tags = checkTags(t); presets = p; selPresets = []; picks = {};
   // 自由入力で追加したタグを重ねる
   Object.entries(extra).forEach(([c, vals]) => {
     if (!tags[c]) return;
     vals.forEach(v => { if (!tags[c].includes(v)) tags[c].push(v); });
   });
+  $("error").hidden = true;
   render();
 }
+
+async function init() {
+  try {
+    const [t, p] = await Promise.all([fetchText("tags.json"), fetchText("presets.json")]);
+    start(parseJson(t, "tags.json"), parseJson(p, "presets.json"));
+  } catch (e) {
+    const hint = location.protocol === "file:"
+      ? "ファイルを直接開いているため、自動では読み込めません。下のボタンから tags.json と presets.json を選んでください。"
+      : "";
+    showError([e.message, hint].filter(Boolean).join("\n"));
+  }
+}
+
+// 自動読み込みに失敗したときの手動読み込み（2ファイルを同時に選ぶ）
+$("pick").onchange = async e => {
+  const files = [...e.target.files]; e.target.value = "";
+  const find = k => files.find(f => f.name.toLowerCase().includes(k));
+  const tf = find("tags"), pf = find("preset");
+  if (!tf || !pf) { showError("tags.json と presets.json の2つを同時に選んでください"); return; }
+  try { start(parseJson(await tf.text(), "tags.json"), parseJson(await pf.text(), "presets.json")); }
+  catch (err) { showError(err.message); }
+};
 
 function presetTags(p) { return Array.isArray(p) ? p : (p && p.tags) || []; }
 function filter() {
