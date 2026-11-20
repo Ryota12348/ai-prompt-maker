@@ -1,0 +1,47 @@
+{
+"preset_school": [
+"modern school uniform",
+"short-sleeved white shirt",
+"classroom",
+"school interior",
+"quiet classroom atmosphere",
+"soft sunlight through windows",
+"soft lighting",
+"cinematic composition",
+"depth of field"
+],
+
+"preset_summer": [
+"lightweight summer outfit",
+"breezy casual fashion",
+"hot sunny day",
+"strong sunlight",
+"warm summer atmosphere",
+"gentle breeze moving hair and clothes",
+"soft shadows",
+"soft lighting",
+"cinematic composition"
+],
+
+"preset_home": [
+"cozy living room",
+"soft cushions",
+"warm evening sunlight filtering through window",
+"calm atmosphere",
+"quiet atmosphere",
+"lived-in feeling",
+"soft lighting",
+"soft shadows"
+],
+
+"preset_kemono_base": [
+"animal tail ",
+"animal ear fluff",
+"furry",
+"fluffy",
+"soft detailed body fur",
+"animal nose",
+"slightly cute animal features",
+"no human ears"
+]
+}
